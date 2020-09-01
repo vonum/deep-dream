@@ -13,4 +13,4 @@ original_image = np.array(original_image)
 
 dd = DeepDream(LAYER_NAMES)
 
-image = dd.run_deep_dream(original_image, 500, 0.001, callback=callback)
+image = dd.run_deep_dream(original_image, 5, 0.001, callback=callback)
