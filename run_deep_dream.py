@@ -60,13 +60,17 @@ STEPS = args["steps"]
 STEP_SIZE = args["step_size"]
 TARGET_SIZE = tuple(args["target_size"])
 
-original_image = tf.keras.preprocessing.image.load_img(IMAGE, TARGET_SIZE)
+original_image = tf.keras.preprocessing.image.load_img(IMAGE, target_size=TARGET_SIZE)
 original_image = np.array(original_image)
 
 dd = DeepDream(LAYERS)
 
-image = dd.run_deep_dream(original_image, STEPS,
-                          STEP_SIZE, callback=DeepDream.print_iteration)
+image = dd.run_deep_dream(
+  original_image,
+  steps=STEPS,
+  step_size=STEP_SIZE,
+  callback=DeepDream.print_iteration
+)
 
 im = Image.fromarray(image.numpy())
 im.save(OUTPUT_IMAGE)
