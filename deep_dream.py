@@ -79,14 +79,9 @@ class DeepDream:
 
     return image
 
-  def _reinject_details(self, image, original_image, shrunk_original_image, shape):
-    upscaled_shrunk_original_image = tf.image.resize(shrunk_original_image, shape).numpy()
-    same_size_original_image = tf.image.resize(original_image, shape).numpy()
-    lost_detail = same_size_original_image - upscaled_shrunk_original_image
-
-    image += lost_detail
-    # shrunk_original_img = resize_img(original_img, shape)
-    return image
+  @staticmethod
+  def print_iteration(image, step, loss):
+    print ("Step {}, loss {}".format(step, loss))
 
   @staticmethod
   def render_iteration(image, step, loss):
@@ -103,6 +98,16 @@ class DeepDream:
   def deprocess_image(image):
     image = 255 * (image + 1.0) / 2.0
     return tf.cast(image, tf.uint8)
+
+  def _reinject_details(self, image, original_image, shrunk_original_image, shape):
+    upscaled_shrunk_original_image = tf.image.resize(shrunk_original_image, shape).numpy()
+    same_size_original_image = tf.image.resize(original_image, shape).numpy()
+    lost_detail = same_size_original_image - upscaled_shrunk_original_image
+
+    image += lost_detail
+    # shrunk_original_img = resize_img(original_img, shape)
+    return image
+
 
   def _build_model(self, layer_names):
     base_model = tf.keras.applications.InceptionV3(include_top=False, weights="imagenet")
